@@ -65,10 +65,10 @@ typedef struct
 // Global instance
 static VersionData_t versionData =
 {
-    .DateTime   = "2024-01-09 13:05:14\0",
-    .Developer  = "drjohnsmith\0",
-    .Uuid       = "2d1eaff8-9215-471e-b311-ecaa4b0637db\0",
-    .Version    = "1.2.5\0",
+    .DateTime        = "2024-01-09 13:05:14\0",
+    .Developer       = "drjohnsmith\0",
+    .Uuid            = "2d1eaff8-9215-471e-b311-ecaa4b0637db\0",
+    .Version         = "1.2.5\0",
     .git_commit_hash = "013fdc22d63b33bdc8eba5bb4a626dc9f719b42f\0"
 };
 
