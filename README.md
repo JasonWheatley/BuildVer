@@ -1,6 +1,6 @@
 # build_ver
 ## Introduction
-Generates a C source &amp; header containing date, time, developer, UUID &amp; version information.
+Generates a C source &amp; header containing date, time, developer, UUID, version information &amp; Git commit hash.
 
 ### Files Generated
 * build_ver.c
