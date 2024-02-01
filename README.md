@@ -11,6 +11,7 @@ Generates a C source &amp; header containing date, time, developer, UUID &amp; v
 * `const char* GetDeveloper();`
 * `const char* GetUuid();`
 * `const char* GetVersion();`
+* `const char* GetGitHash();`
 
 ## Usage
 `python3 gen_ver.py <out dir> <version string>`
@@ -42,6 +43,7 @@ const char* GetDateTime();
 const char* GetDeveloper();
 const char* GetUuid();
 const char* GetVersion();
+const char* GetGitHash();
 
 #endif // BUILD_VER_H
 ```
@@ -57,6 +59,7 @@ typedef struct
     char Developer[DEVELOPER_LENGTH + 1];
     char Uuid[UUID_LENGTH + 1];
     char Version[VERSION_LENGTH + 1];
+    char git_commit_hash[GIT_COMMIT_HASH_LENGTH + 1];
 }VersionData_t;
 
 // Global instance
@@ -66,6 +69,7 @@ static VersionData_t versionData =
     .Developer  = "drjohnsmith\0",
     .Uuid       = "2d1eaff8-9215-471e-b311-ecaa4b0637db\0",
     .Version    = "1.2.5\0",
+    .git_commit_hash = "013fdc22d63b33bdc8eba5bb4a626dc9f719b42f\0"
 };
 
 // Accessor functions
@@ -88,8 +92,12 @@ const char* GetVersion()
 {
     return versionData.Version;
 }
-```
 
+const char* GetGitHash() 
+{
+    return versionData.git_commit_hash;
+}
+```
 
 ## Using Generated Code
 
@@ -104,6 +112,7 @@ int main(int argc, char *argv[])
     printf("Developer:       %s\n", GetDeveloper());
     printf("UUID:            %s\n", GetUuid());
     printf("Version:         %s\n", GetVersion());
+    printf("Git Hash:        %s\n", GetGitHash());
     printf("\n");
     
     return 0;
@@ -117,5 +126,6 @@ Build Date/Time: 2024-01-09 13:05:14
 Developer:       drjohnsmith
 UUID:            2d1eaff8-9215-471e-b311-ecaa4b0637db
 Version:         1.2.5
+Git Hash:        013fdc22d63b33bdc8eba5bb4a626dc9f719b42f
 ```
 
