@@ -23,7 +23,7 @@ Generates a C source &amp; header containing date, time, developer, UUID &amp; v
 
 ### Example
 ``` shell
-python3 gen_ver.py out "1.2.5"
+python3 gen_ver.py src "1.2.5"
 ```
 
 ## Generated Code
