@@ -2,6 +2,7 @@ import os
 import sys
 import uuid
 import platform
+import subprocess  # Added subprocess module
 from datetime import datetime
 
 def get_developer_name():
@@ -21,6 +22,17 @@ def get_developer_name():
         print(f"Error: Unsupported operating system - '{system}'. Exiting.")
         sys.exit(1)
 
+def get_git_commit_hash():
+
+    try:
+        # Run 'git rev-parse HEAD' command to get the commit hash
+        result = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, check=True)
+        result = result.stdout.strip()
+        result = result.replace(chr(0), '\\0')
+        return result
+    except subprocess.CalledProcessError:
+        # Git command failed, project is not a Git project
+        return "NOT A GIT PROJECT\0"
 
 def generate_c_file(file_name, output_directory, version_number):
     # Get current date & time
@@ -31,6 +43,9 @@ def generate_c_file(file_name, output_directory, version_number):
 
     # Generate a UUID
     unique_id = str(uuid.uuid4())
+
+    # Get Git commit hash or "NOT A GIT PROJECT"
+    git_commit_hash = get_git_commit_hash()
 
     # Content for the C file
     c_file_content = f"""
@@ -43,15 +58,17 @@ typedef struct
     char Developer[DEVELOPER_LENGTH + 1];
     char Uuid[UUID_LENGTH + 1];
     char Version[VERSION_LENGTH + 1];
+    char git_commit_hash[GIT_COMMIT_HASH_LENGTH + 1];  // +1 for null terminator
 }}VersionData_t;
 
 // Global instance
 static VersionData_t versionData =
 {{
-    .DateTime   = "{current_datetime}\\0",
-    .Developer  = "{developer_name}\\0",
-    .Uuid       = "{unique_id}\\0",
-    .Version    = "{version_number}\\0",
+    .DateTime        = "{current_datetime}\\0",
+    .Developer       = "{developer_name}\\0",
+    .Uuid            = "{unique_id}\\0",
+    .Version         = "{version_number}\\0",
+    .git_commit_hash = "{git_commit_hash}\\0"
 }};
 
 // Accessor functions
@@ -74,6 +91,11 @@ const char* GetVersion()
 {{
     return versionData.Version;
 }}
+
+const char* GetGitHash() 
+{{
+    return versionData.git_commit_hash;
+}}
 """
 
     # Content for the header file
@@ -86,12 +108,14 @@ const char* GetVersion()
 #define DEVELOPER_LENGTH 30
 #define UUID_LENGTH 36
 #define VERSION_LENGTH 20
+#define GIT_COMMIT_HASH_LENGTH 40  // Assuming a typical Git hash length
 
 // Function declarations
 const char* GetDateTime();
 const char* GetDeveloper();
 const char* GetUuid();
 const char* GetVersion();
+const char* GetGitHash();
 
 #endif // {file_name.upper()}_H
 """
