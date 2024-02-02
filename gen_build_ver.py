@@ -58,17 +58,17 @@ typedef struct
     char Developer[DEVELOPER_LENGTH + 1];
     char Uuid[UUID_LENGTH + 1];
     char Version[VERSION_LENGTH + 1];
-    char git_commit_hash[GIT_COMMIT_HASH_LENGTH + 1];  // +1 for null terminator
+    char GitCommitHash[GIT_COMMIT_HASH_LENGTH + 1];  // +1 for null terminator
 }}VersionData_t;
 
 // Global instance
 static VersionData_t versionData =
 {{
-    .DateTime        = "{current_datetime}\\0",
-    .Developer       = "{developer_name}\\0",
-    .Uuid            = "{unique_id}\\0",
-    .Version         = "{version_number}\\0",
-    .git_commit_hash = "{git_commit_hash}\\0"
+    .DateTime      = "{current_datetime}\\0",
+    .Developer     = "{developer_name}\\0",
+    .Uuid          = "{unique_id}\\0",
+    .Version       = "{version_number}\\0",
+    .GitCommitHash = "{git_commit_hash}\\0"
 }};
 
 // Accessor functions
@@ -94,7 +94,7 @@ const char* GetVersion()
 
 const char* GetGitHash() 
 {{
-    return versionData.git_commit_hash;
+    return versionData.GitCommitHash;
 }}
 """
 
